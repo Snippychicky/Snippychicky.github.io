@@ -1,2 +1,0 @@
-# Snippychicky.github.io
-stuff
