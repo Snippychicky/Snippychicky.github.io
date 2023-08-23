@@ -1,44 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Manul Beta</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button Page</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Random manul Beta Press F5 to get a new image</h1>
-    <div id="image-container">
-        <img id="random-image" src="" alt="Random Image">
-    </div>
-
-   <script>
-    window.addEventListener('load', function () {
-        const imageFilenames = [
-                '1.png', // Add your image filenames here
-                '2.png',
-                '3.png',
-                '4.png',
-                '5.png',
-                '6.png',
-                '7.png',
-                '8.png',
-                '9.png',
-                '10.png',
-        ];
-
-        const randomIndex = Math.floor(Math.random() * imageFilenames.length);
-        const randomImageFilename = imageFilenames[randomIndex];
-
-        const imageElement = document.getElementById('random-image');
-        imageElement.onerror = function () {
-            console.error('Error loading image:', randomImageFilename);
-        };
-        imageElement.onload = function () {
-            console.log('Image loaded:', randomImageFilename);
-        };
-        imageElement.src = 'pictures/' + randomImageFilename;
-    });
-</script>
-
+  <div class="button-container">
+    <button class="popup-button" onclick="location.href='page1.html'">Button 1</button>
+    <button class="popup-button" onclick="location.href='page2.html'">Button 2</button>
+    <button class="popup-button" onclick="location.href='page3.html'">Button 3</button>
+    <button class="popup-button" onclick="location.href='page4.html'">Button 4</button>
+    <button class="popup-button" onclick="location.href='page5.html'">Button 5</button>
+    <button class="popup-button" onclick="location.href='page6.html'">Button 6</button>
+  </div>
 </body>
 </html>
