@@ -4,15 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>An Intro to the Pallas Cat</title>
-  <link rel="stylesheet" href="Intro.css">
+  <style>
+    body {
+      font-family: Verdana, sans-serif;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 32px;
+      margin-top: 20px;
+    }
+
+    .content {
+      margin: 20px;
+    }
+
+    .popup-button {
+      display: block;
+      width: 100px;
+      margin: 20px auto;
+      padding: 10px;
+      text-align: center;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .popup-button:hover {
+      background-color: #2980b9;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>An Intro to the Pallas Cat</h1>
-  </header>
-  <main>
+  <div class="title">
+    An Intro to the Pallas Cat
+  </div>
+  <div class="content">
     <p>Blank paragraph</p>
-  </main>
-  <button class="popup-button">Popup Button</button>
+    <a class="popup-button" href="index.html">Back</a>
+  </div>
 </body>
 </html>
