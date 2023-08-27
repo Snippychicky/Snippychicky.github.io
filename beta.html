@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pallas Index</title>
+  <style>
+    body {
+      background-color: #585858;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .popup-button {
+      background-color: darkgrey;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      position: relative; /* Add relative positioning */
+    }
+
+    .button-image {
+      border: 2px solid black; /* Thin black border */
+      border-radius: 50%; /* Rounded corners */
+      width: 40px; /* Adjust image size as needed */
+      height: 40px;
+      position: absolute; /* Position the image */
+      top: -20px; /* Adjust vertical position */
+      left: -20px; /* Adjust horizontal position */
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <button class="popup-button" onclick="location.href='Intro.html'">Intro To Manul</button>
+    <img class="button-image" src="intro_image.jpg" alt="Intro Image">
+    
+    <button class="popup-button" onclick="location.href='Tabby.html'">Tabby</button>
+    <img class="button-image" src="tabby_image.jpg" alt="Tabby Image">
+    
+    <button class="popup-button" onclick="location.href='Bolly.html'">Bol & Polly</button>
+    <img class="button-image" src="bolly_image.jpg" alt="Bolly Image">
+    
+    <button class="popup-button" onclick="location.href='Zel.html'">Zelenigorsk</button>
+    <img class="button-image" src="zel_image.jpg" alt="Zel Image">
+    
+    <button class="popup-button" onclick="location.href='Lev.html'">Lev</button>
+    <img class="button-image" src="lev_image.jpg" alt="Lev Image">
+    
+    <button class="popup-button" onclick="location.href='Naz.html'">Nar & Az</button>
+    <img class="button-image" src="naz_image.jpg" alt="Naz Image">
+  </div>
+</body>
+</html>
