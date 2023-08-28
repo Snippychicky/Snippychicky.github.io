@@ -1,50 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=5.0">
-  <title>Pallas Index</title>
-  <style>
-    body {
-      background-color: #585858;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pallas Index</title>
+    <style>
+        body {
+ 	 background-color: grey;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
 
-    .button-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
 
-    .popup-button {
-      background-color: darkgrey;
-      color: black;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 20px;
-      margin: 5px;
-      cursor: pointer;
-      transition: box-shadow 0.3s ease;
-    }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .popup-button:hover {
-      box-shadow: 0 14px 16px rgba(0, 0, 0, 0.1);
-    }
-  </style>
+        .popup-button {
+            background-color: #969696;
+            color: black;
+              border: 2px solid #000000;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .popup-button:hover {
+            box-shadow: 0 14px 16px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-  <div class="button-container">
-    <button class="popup-button" onclick="location.href='Intro.html'">Intro To Manul</button>
-    <button class="popup-button" onclick="location.href='Tabby.html'">Tabby</button>
-    <button class="popup-button" onclick="location.href='Bolly.html'">Bol & Polly</button>
-    <button class="popup-button" onclick="location.href='Zel.html'">Zelenigorsk</button>
-    <button class="popup-button" onclick="location.href='Lev.html'">Lev</button>
-    <button class="popup-button" onclick="location.href='Naz.html'">Nar & Az</button>
-    <button class="popup-button" onclick="location.href='Grusha.html'">Grusha</button>
-  </div>
+    <div id="particles-js"></div>
+    <div class="button-container">
+        <button class="popup-button" onclick="location.href='Intro.html'">Intro To Manul</button>
+        <button class="popup-button" onclick="location.href='Tabby.html'">Tabby</button>
+        <button class="popup-button" onclick="location.href='Bolly.html'">Bol & Polly</button>
+        <button class="popup-button" onclick="location.href='Zel.html'">Zelenigorsk</button>
+        <button class="popup-button" onclick="location.href='Lev.html'">Lev</button>
+        <button class="popup-button" onclick="location.href='Naz.html'">Nar & Az</button>
+        <button class="popup-button" onclick="location.href='Grusha.html'">Grusha</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+              particles: {
+                number: {
+                    value: 300,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#942626'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 0,
+                        color: '#942626'
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#942626',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'repulse'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 400,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
 </body>
 </html>
