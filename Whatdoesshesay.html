@@ -26,7 +26,6 @@
             font-size: 18px;
             color: #fff;
             position: relative;
-            animation: shake 0.5s ease-in-out 0s infinite alternate;
         }
 
         input[type="text"] {
@@ -43,11 +42,18 @@
             cursor: pointer;
         }
 
+        .shake {
+            animation: shake 0.5s ease-in-out 0s 1 normal forwards;
+        }
+
         @keyframes shake {
-            0% {
+            0%, 100% {
                 transform: translate(0, 0);
             }
-            100% {
+            10%, 30%, 50%, 70%, 90% {
+                transform: translate(-5px, 0);
+            }
+            20%, 40%, 60%, 80% {
                 transform: translate(5px, 0);
             }
         }
@@ -76,15 +82,24 @@
             const magic8Ball = document.getElementById("magic-8-ball");
             const responseInput = document.getElementById("response");
 
-            // Randomly select a response
-            const randomIndex = Math.floor(Math.random() * responses.length);
-            const randomResponse = responses[randomIndex];
+            // Add 'shake' class to initiate shaking animation
+            magic8Ball.classList.add("shake");
 
-            // Update the 8-ball text
-            magic8Ball.innerText = randomResponse;
+            // Randomly select a response after 0.5 seconds
+            setTimeout(() => {
+                // Randomly select a response
+                const randomIndex = Math.floor(Math.random() * responses.length);
+                const randomResponse = responses[randomIndex];
 
-            // Clear the input field
-            responseInput.value = "";
+                // Update the 8-ball text
+                magic8Ball.innerText = randomResponse;
+
+                // Clear the input field
+                responseInput.value = "";
+
+                // Remove 'shake' class to stop the animation
+                magic8Ball.classList.remove("shake");
+            }, 500); // 0.5 seconds delay
         }
     </script>
 </body>
