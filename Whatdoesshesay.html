@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic 8-Ball</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .magic-8-ball {
+            width: 200px;
+            height: 200px;
+            background-color: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+            position: relative;
+            animation: shake 0.5s ease-in-out 0s infinite alternate;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(5px, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="magic-8-ball" id="magic-8-ball">
+        Click 'Shake' for answers!
+    </div>
+    <input type="text" id="response" placeholder="Set your response...">
+    <button onclick="shakeMagic8Ball()">Shake</button>
+
+    <script>
+        function shakeMagic8Ball() {
+            const responses = [
+                "Yes",
+                "No",
+                "Maybe",
+                "Ask again later",
+                "Outlook not so good",
+                "Signs point to yes",
+                "Cannot predict now",
+                "Concentrate and ask again"
+            ];
+
+            const magic8Ball = document.getElementById("magic-8-ball");
+            const responseInput = document.getElementById("response");
+
+            // Randomly select a response
+            const randomIndex = Math.floor(Math.random() * responses.length);
+            const randomResponse = responses[randomIndex];
+
+            // Update the 8-ball text
+            magic8Ball.innerText = randomResponse;
+
+            // Clear the input field
+            responseInput.value = "";
+        }
+    </script>
+</body>
+</html>
