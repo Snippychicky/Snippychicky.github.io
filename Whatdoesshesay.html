@@ -21,11 +21,18 @@
             background-color: #333;
             border-radius: 50%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             color: #fff;
             position: relative;
+            overflow: hidden;
+        }
+
+        .magic-8-ball img {
+            max-width: 100%;
+            max-height: 100%;
         }
 
         input[type="text"] {
@@ -46,6 +53,10 @@
             animation: shake 0.5s ease-in-out 0s 1 normal forwards;
         }
 
+        .response-text {
+            margin-top: 20px;
+        }
+
         @keyframes shake {
             0%, 100% {
                 transform: translate(0, 0);
@@ -61,10 +72,11 @@
 </head>
 <body>
     <div class="magic-8-ball" id="magic-8-ball">
-        Click 'Shake' for answers!
+        <img src="your-image-url.jpg" alt="Magic 8-Ball">
     </div>
     <input type="text" id="response" placeholder="Set your response...">
     <button onclick="shakeMagic8Ball()">Shake</button>
+    <div class="response-text" id="response-text"></div>
 
     <script>
         function shakeMagic8Ball() {
@@ -81,6 +93,7 @@
 
             const magic8Ball = document.getElementById("magic-8-ball");
             const responseInput = document.getElementById("response");
+            const responseText = document.getElementById("response-text");
 
             // Add 'shake' class to initiate shaking animation
             magic8Ball.classList.add("shake");
@@ -92,7 +105,7 @@
                 const randomResponse = responses[randomIndex];
 
                 // Update the 8-ball text
-                magic8Ball.innerText = randomResponse;
+                responseText.innerText = randomResponse;
 
                 // Clear the input field
                 responseInput.value = "";
