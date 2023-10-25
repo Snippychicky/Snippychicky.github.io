@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Emulation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+
+        .terminal {
+            width: 400px;
+            background-color: black;
+            color: white;
+            border: 1px solid white;
+            font-family: monospace;
+            overflow: hidden;
+        }
+
+        pre {
+            margin: 0;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+
+        input {
+            width: 100%;
+            background-color: black;
+            color: white;
+            border: none;
+            outline: none;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <pre id="output"></pre>
+        <input id="input" type="text" autofocus>
+    </div>
+    <script>
+        const output = document.getElementById('output');
+        const input = document.getElementById('input');
+
+        // Function to handle user input and execute commands
+        function handleInput(e) {
+            if (e.key === 'Enter') {
+                const command = input.value;
+                input.value = '';
+
+                // Display the command in the terminal
+                printToTerminal(`> ${command}`);
+
+                // Handle specific commands
+                if (command === 'help') {
+                    printToTerminal('Available commands: help, clear');
+                } else if (command === 'clear') {
+                    clearTerminal();
+                } else {
+                    printToTerminal(`Command not found: ${command}`);
+                }
+            }
+        }
+
+        // Function to print text to the terminal
+        function printToTerminal(text) {
+            output.innerHTML += text + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Function to clear the terminal
+        function clearTerminal() {
+            output.innerHTML = '';
+        }
+
+        input.addEventListener('keyup', handleInput);
+    </script>
+</body>
+</html>
