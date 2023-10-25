@@ -3,25 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linux Terminal Emulation</title>
+    <title>Windows 10 Command Prompt Emulation</title>
     <style>
         body {
             margin: 0;
-            background-color: black;
+            background-color: #000000;
             display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
         }
 
         .terminal {
-            background-color: black;
+            background-color: #000000;
             color: #00ff00;
             border: 1px solid #00ff00;
-            font-family: monospace;
+            font-family: Consolas, monospace;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
             max-width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title-bar {
+            background-color: #0000AA;
+            color: #ffffff;
+            padding: 5px;
+            text-align: center;
+            font-weight: bold;
         }
 
         pre {
@@ -32,42 +42,30 @@
 
         input {
             width: 100%;
-            background-color: black;
+            background-color: #000000;
             color: #00ff00;
             border: none;
             outline: none;
-            font-family: monospace;
+            font-family: Consolas, monospace;
             padding: 10px;
+            resize: none;
         }
 
-        /* Linux terminal style */
-        .terminal::before {
-            content: "Linux Terminal Emulation";
-            display: block;
-            background-color: #00008B;
-            color: #00ff00;
-            padding: 5px;
-            font-weight: bold;
-            text-align: center;
-        }
-
+        /* Windows 10 Command Prompt style */
         pre::before {
-            content: "$ ";
+            content: "C:\\Users\\User>";
         }
 
         pre {
             color: #00ff00;
         }
-
-        input::before {
-            content: "$ ";
-        }
     </style>
 </head>
 <body>
     <div class="terminal">
-        <input id="input" type="text" autofocus>
+        <div class="title-bar">Command Prompt</div>
         <pre id="output"></pre>
+        <input id="input" type="text" autofocus>
     </div>
     <script>
         const output = document.getElementById('output');
