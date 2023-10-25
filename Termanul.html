@@ -34,6 +34,14 @@
             font-weight: bold;
         }
 
+        .prompt {
+            background-color: #0000AA;
+            color: #ffffff;
+            padding: 5px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
         pre {
             margin: 0;
             padding: 10px;
@@ -64,8 +72,10 @@
 <body>
     <div class="terminal">
         <div class="title-bar">Command Prompt</div>
-        <pre id="output"></pre>
-        <input id="input" type="text" autofocus>
+        <div class="prompt">
+            <pre id="output"></pre>
+            <input id="input" type="text" autofocus>
+        </div>
     </div>
     <script>
         const output = document.getElementById('output');
