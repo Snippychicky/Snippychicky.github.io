@@ -1,51 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jigsaw Puzzle Generator</title>
     <style>
-        /* Define your CSS styles here */
+        .card {
+            width: 100px;
+            height: 100px;
+            background: #ccc;
+            margin: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .card.matched {
+            background: green;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
-    <h1>Jigsaw Puzzle Generator</h1>
-    <div id="puzzle-container">
-        <button id="generate-button">Generate Puzzle</button>
-    </div>
+    <div class="memory-game"></div>
     <script>
-        const puzzleContainer = document.getElementById('puzzle-container');
-        const generateButton = document.getElementById('generate-button');
-        const imageCount = 5; // Adjust this number to match the number of images you have (e.g., jsaw1.png, jsaw2.png, etc.).
+        const cards = [
+            'jsaw1.png',
+'jsaw2.png',
+'jsaw3.png',
+'jsaw4.png',
+'jsaw5.png',
+'jsaw6.png',
+'jsaw7.png',
+'jsaw8.png',
+'jsaw9.png',
+'jsaw10.png', 
+'jsaw11.png',
+'jsaw12.png',
+'jsaw13.png',      
+            // Add Pallas cat image filenames here
+        ];
 
-        generateButton.addEventListener('click', generatePuzzle);
+        let hasFlippedCard = false;
+        let lockBoard = false;
+        let firstCard, secondCard;
 
-        function generatePuzzle() {
-            // Generate a random image number from 1 to imageCount.
-            const randomImageNumber = Math.floor(Math.random() * imageCount) + 1;
-            
-            // Construct the image source using the random number.
-            const randomImageSrc = `jsaw${randomImageNumber}.png`;
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
 
-            // Create the puzzle pieces using the image.
-            const puzzlePieces = createPuzzlePieces(randomImageSrc);
+            this.classList.add('flip');
 
-            // Clear the container and append puzzle pieces.
-            puzzleContainer.innerHTML = '';
-            puzzlePieces.forEach((piece, index) => {
-                puzzleContainer.appendChild(piece);
-                piece.style.order = index;
+            if (!hasFlippedCard) {
+                hasFlippedCard = true;
+                firstCard = this;
+                return;
+            }
+
+            secondCard = this;
+            checkForMatch();
+        }
+
+        function checkForMatch() {
+            let isMatch = firstCard.src === secondCard.src;
+
+            isMatch ? disableCards() : unflipCards();
+        }
+
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+
+            resetBoard();
+        }
+
+        function unflipCards() {
+            lockBoard = true;
+
+            setTimeout(() => {
+                firstCard.classList.remove('flip');
+                secondCard.classList remove('flip');
+
+                resetBoard();
+            }, 1000);
+        }
+
+        function resetBoard() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
+        }
+
+        (function shuffle() {
+            cards.forEach(card => {
+                const randomPos = Math.floor(Math.random() * cards.length);
+                card.style.order = randomPos;
             });
-        }
+        })();
 
-        function createPuzzlePieces(imageSrc) {
-            // Split the image into puzzle pieces and create div elements.
-            const pieces = [];
-
-            // Implement logic to split the image and create pieces.
-
-            return pieces;
-        }
+        const memoryGame = document.querySelector('.memory-game');
+        cards.forEach((card, index) => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.style.order = index;
+            cardElement.style.backgroundImage = `url(${card})`;
+            cardElement.addEventListener('click', flipCard);
+            memoryGame.appendChild(cardElement);
+        });
     </script>
 </body>
 </html>
