@@ -6,22 +6,22 @@
     <title>Linux Terminal Emulation</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
             background-color: black;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            height: 100vh;
         }
 
         .terminal {
-            width: 600px;
             background-color: black;
             color: #00ff00;
             border: 1px solid #00ff00;
             font-family: monospace;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            max-width: 100%;
         }
 
         pre {
@@ -37,6 +37,7 @@
             border: none;
             outline: none;
             font-family: monospace;
+            padding: 10px;
         }
 
         /* Linux terminal style */
@@ -61,16 +62,12 @@
         input::before {
             content: "$ ";
         }
-
-        input {
-            color: #00ff00;
-        }
     </style>
 </head>
 <body>
     <div class="terminal">
-        <pre id="output"></pre>
         <input id="input" type="text" autofocus>
+        <pre id="output"></pre>
     </div>
     <script>
         const output = document.getElementById('output');
