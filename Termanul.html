@@ -81,6 +81,7 @@
     <script>
         const output = document.getElementById('output');
         const input = document.getElementById('input');
+        const prompt = document.querySelector('.prompt');
 
         // Function to handle user input and execute commands
         function handleInput(e) {
@@ -99,6 +100,10 @@
                 } else {
                     printToTerminal(`Command not found: ${command}`);
                 }
+
+                // Set the prompt and focus on the input
+                prompt.innerText = "C:\\Users\\User>";
+                input.focus();
             }
         }
 
