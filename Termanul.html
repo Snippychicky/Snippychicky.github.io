@@ -1,124 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows 10 Command Prompt Emulation</title>
-    <style>
-        body {
-            margin: 0;
-            background-color: #000000;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            height: 100vh;
-        }
-
-        .terminal {
-            background-color: #000000;
-            color: #00ff00;
-            font-family: Consolas, monospace;
-            overflow: hidden;
-            max-width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .title-bar {
-            background-color: #0000AA;
-            color: #ffffff;
-            padding: 5px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .prompt {
-            background-color: #000000;
-            color: #00ff00;
-            padding: 5px;
-            font-weight: bold;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-        }
-
-        pre {
-            margin: 0;
-            padding: 10px;
-            white-space: pre-wrap;
-        }
-
-        input {
-            width: 100%;
-            background-color: #000000;
-            color: #00ff00;
-            border: none;
-            outline: none;
-            font-family: Consolas, monospace;
-            padding: 10px;
-            resize: none;
-        }
-
-        /* Windows 10 Command Prompt style */
-        pre::before {
-            content: "C:\\Users\\User>";
-        }
-
-        pre {
-            color: #00ff00;
-            display: inline;
-        }
-    </style>
+    <title>Web Terminal</title>
+    <link rel="stylesheet" href="https://unpkg.com/xterm@4.12.0/dist/xterm.css" />
 </head>
 <body>
-    <div class="terminal">
-        <div class="title-bar">Command Prompt</div>
-        <div class="prompt">
-            <pre id="output"></pre>
-            <input id="input" type="text" autofocus>
-        </div>
-    </div>
+    <div id="terminal"></div>
+
+    <script src="https://unpkg.com/xterm@4.12.0/dist/xterm.js"></script>
     <script>
-        const output = document.getElementById('output');
-        const input = document.getElementById('input');
-        const prompt = document.querySelector('.prompt');
+        // Initialize xterm.js
+        const xterm = new Terminal();
+        xterm.open(document.getElementById('terminal'));
 
-        // Function to handle user input and execute commands
-        function handleInput(e) {
-            if (e.key === 'Enter') {
-                const command = input.value;
-                input.value = '';
+        // Create a shell prompt
+        const shellPrompt = '$ ';
 
-                // Display the command in the terminal
-                printToTerminal(`> ${command}`);
+        // Function to handle user input
+        function handleInput(data) {
+            const input = data.trim();
 
-                // Handle specific commands
-                if (command === 'help') {
-                    printToTerminal('Available commands: help, clear');
-                } else if (command === 'clear') {
-                    clearTerminal();
-                } else {
-                    printToTerminal(`Command not found: ${command}`);
-                }
+            // Print the user's command
+            xterm.writeln(`${shellPrompt}${input}`);
 
-                // Set the prompt and focus on the input
-                prompt.innerText = "C:\\Users\\User>";
-                input.focus();
+            // Implement your command processing logic here
+            if (input === 'help') {
+                xterm.writeln('This is a simple web terminal. You can implement your own command handling logic.');
+            } else if (input === 'clear') {
+                xterm.clear();
+            } else {
+                xterm.writeln(`Command not recognized: ${input}`);
             }
+
+            xterm.prompt();
         }
 
-        // Function to print text to the terminal
-        function printToTerminal(text) {
-            output.innerHTML += text + '\n';
-            output.scrollTop = output.scrollHeight;
-        }
+        // Setup the prompt and handle user input
+        xterm.prompt = () => {
+            xterm.write('\r\n');
+            xterm.write(shellPrompt);
+        };
 
-        // Function to clear the terminal
-        function clearTerminal() {
-            output.innerHTML = '';
-        }
+        xterm.prompt();
 
-        input.addEventListener('keyup', handleInput);
+        // Attach the input handler to capture user input
+        xterm.onData((data) => {
+            const printable = !xterm.buffer.cursorX;
+            if (printable) {
+                handleInput(data);
+            } else {
+                xterm.write(data);
+            }
+        });
+
+        // Fit the terminal to the containing div
+        xterm.fit();
+
+        // Focus the terminal for input
+        xterm.focus();
     </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #00ff00;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #terminal {
+            height: 100vh;
+        }
+    </style>
 </body>
 </html>
