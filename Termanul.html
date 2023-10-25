@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal Emulation</title>
+    <title>Linux Terminal Emulation</title>
     <style>
         body {
             display: flex;
@@ -15,12 +15,13 @@
         }
 
         .terminal {
-            width: 400px;
+            width: 600px;
             background-color: black;
-            color: white;
-            border: 1px solid white;
+            color: #00ff00;
+            border: 1px solid #00ff00;
             font-family: monospace;
             overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
         }
 
         pre {
@@ -32,10 +33,37 @@
         input {
             width: 100%;
             background-color: black;
-            color: white;
+            color: #00ff00;
             border: none;
             outline: none;
             font-family: monospace;
+        }
+
+        /* Linux terminal style */
+        .terminal::before {
+            content: "Linux Terminal Emulation";
+            display: block;
+            background-color: #00008B;
+            color: #00ff00;
+            padding: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        pre::before {
+            content: "$ ";
+        }
+
+        pre {
+            color: #00ff00;
+        }
+
+        input::before {
+            content: "$ ";
+        }
+
+        input {
+            color: #00ff00;
         }
     </style>
 </head>
