@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jigsaw Puzzle Generator</title>
+    <style>
+        /* Define your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Jigsaw Puzzle Generator</h1>
+    <div id="puzzle-container">
+        <button id="generate-button">Generate Puzzle</button>
+    </div>
+    <script>
+        const puzzleContainer = document.getElementById('puzzle-container');
+        const generateButton = document.getElementById('generate-button');
+        const imageCount = 5; // Adjust this number to match the number of images you have (e.g., jsaw1.png, jsaw2.png, etc.).
+
+        generateButton.addEventListener('click', generatePuzzle);
+
+        function generatePuzzle() {
+            // Generate a random image number from 1 to imageCount.
+            const randomImageNumber = Math.floor(Math.random() * imageCount) + 1;
+            
+            // Construct the image source using the random number.
+            const randomImageSrc = `jsaw${randomImageNumber}.png`;
+
+            // Create the puzzle pieces using the image.
+            const puzzlePieces = createPuzzlePieces(randomImageSrc);
+
+            // Clear the container and append puzzle pieces.
+            puzzleContainer.innerHTML = '';
+            puzzlePieces.forEach((piece, index) => {
+                puzzleContainer.appendChild(piece);
+                piece.style.order = index;
+            });
+        }
+
+        function createPuzzlePieces(imageSrc) {
+            // Split the image into puzzle pieces and create div elements.
+            const pieces = [];
+
+            // Implement logic to split the image and create pieces.
+
+            return pieces;
+        }
+    </script>
+</body>
+</html>
