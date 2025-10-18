@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pallas Cat Identifier 🐾</title>
 
-  <!-- TensorFlow.js and Teachable Machine -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+  <!-- Use the exact alpha version to match your exported model -->
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.4-alpha2/dist/teachablemachine-image.min.js"></script>
 
   <style>
     body {
@@ -58,43 +57,49 @@
       const metadataURL = modelURL + "metadata.json";
       model = await tmImage.load(modelURLFull, metadataURL);
       console.log("✅ Model loaded!");
+      console.log("Class labels:", model.getClassLabels());
     }
 
     loadModel();
 
-    // Label mapping: raw model labels → friendly display names
     const labelMap = {
       "manul": "Pallas Cat 🐾",
-      "not manul": "Not a Pallas Cat 🚫",
-      "unknown": "Unrecognized 😕"
+      "not manul": "Not a Pallas Cat 🚫"
     };
 
     document.getElementById("imageUpload").addEventListener("change", async (event) => {
       const file = event.target.files[0];
       if (!file) return;
 
-      // Show preview image
+      // Show preview
       const img = document.createElement("img");
       img.src = URL.createObjectURL(file);
       img.onload = () => URL.revokeObjectURL(img.src);
       document.getElementById("preview").innerHTML = "";
       document.getElementById("preview").appendChild(img);
 
-      // Predict
       if (!model) {
         document.getElementById("results").innerText = "Loading model...";
         await loadModel();
       }
 
       const prediction = await model.predict(img);
-      prediction.sort((a, b) => b.probability - a.probability);
 
-      const top = prediction[0];
+      // Show all predictions for debugging
+      let debug = "<h3>Predictions:</h3><ul>";
+      prediction.forEach(p => {
+        debug += `<li>${p.className}: ${(p.probability * 100).toFixed(2)}%</li>`;
+      });
+      debug += "</ul>";
+
+      // Top prediction
+      const top = prediction.reduce((a,b) => a.probability > b.probability ? a : b);
       const label = labelMap[top.className] || top.className;
 
       document.getElementById("results").innerHTML = `
-        <h3>Prediction: ${label}</h3>
+        <h3>Top Prediction: ${label}</h3>
         <p>Confidence: ${(top.probability * 100).toFixed(2)}%</p>
+        ${debug}
       `;
     });
   </script>
