@@ -3,100 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pallas Cat Identifier 🐾</title>
-
-  <!-- TensorFlow.js and Teachable Machine -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-
+  <title>Pallas Cat Identifier</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.7.4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.4-alpha2/dist/teachablemachine-image.min.js"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f4f4f4;
-      padding: 2rem;
-    }
-    h1 {
-      color: #333;
-      margin-bottom: 1rem;
-    }
-    #preview img {
-      margin-top: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      max-width: 80%;
-      height: auto;
-    }
-    #results {
-      margin-top: 1.5rem;
-      font-size: 1.2em;
-    }
-    input[type=file] {
-      background: #fff;
-      border: 1px solid #ccc;
-      padding: 0.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #fafafa; }
+    #preview { max-width: 300px; margin: 20px auto; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    #result { font-size: 1.2em; margin-top: 10px; }
+    #confidence { color: #666; }
   </style>
 </head>
-
 <body>
   <h1>Pallas Cat Identifier 🐾</h1>
-  <p>Upload a photo of a Pallas cat to identify if it’s a Manul or not!</p>
-
   <input type="file" id="imageUpload" accept="image/*" />
-  <div id="preview"></div>
-  <div id="results"></div>
+  <canvas id="canvas" width="224" height="224" style="display:none;"></canvas>
+  <img id="preview" src="" alt="Preview" />
+  <div id="result"></div>
+  <div id="confidence"></div>
 
   <script>
-    const modelURL = "model/"; // Folder containing model.json, metadata.json, weights.bin
-    let model;
+    const modelURL = "model/";
+    let model, maxPredictions;
 
-    async function loadModel() {
+    async function init() {
       const modelURLFull = modelURL + "model.json";
       const metadataURL = modelURL + "metadata.json";
       model = await tmImage.load(modelURLFull, metadataURL);
-      console.log("✅ Model loaded!");
+      maxPredictions = model.getTotalClasses();
+      console.log("Model loaded.");
     }
 
-    loadModel();
+    async function predictImage(image) {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
 
-    // Label mapping: raw model labels → friendly display names
-    const labelMap = {
-      "manul": "Pallas Cat 🐾",
-      "not manul": "Not a Pallas Cat 🚫",
-      "unknown": "Unrecognized 😕"
-    };
-
-    document.getElementById("imageUpload").addEventListener("change", async (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      // Show preview image
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.onload = () => URL.revokeObjectURL(img.src);
-      document.getElementById("preview").innerHTML = "";
-      document.getElementById("preview").appendChild(img);
+      // Crop the center of the image to 224x224
+      const size = Math.min(image.width, image.height);
+      const sx = (image.width - size) / 2;
+      const sy = (image.height - size) / 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, sx, sy, size, size, 0, 0, 224, 224);
 
       // Predict
-      if (!model) {
-        document.getElementById("results").innerText = "Loading model...";
-        await loadModel();
-      }
-
-      const prediction = await model.predict(img);
+      const prediction = await model.predict(canvas);
       prediction.sort((a, b) => b.probability - a.probability);
-
       const top = prediction[0];
-      const label = labelMap[top.className] || top.className;
 
-      document.getElementById("results").innerHTML = `
-        <h3>Prediction: ${label}</h3>
-        <p>Confidence: ${(top.probability * 100).toFixed(2)}%</p>
-      `;
+      document.getElementById("result").innerHTML =
+        top.className === "manul"
+          ? "Prediction: 🐱 Pallas Cat ✅"
+          : "Prediction: Not a Pallas Cat 🚫";
+
+      document.getElementById("confidence").innerHTML =
+        `Confidence: ${(top.probability * 100).toFixed(2)}%`;
+    }
+
+    document.getElementById("imageUpload").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = async function() {
+          document.getElementById("preview").src = img.src;
+          await predictImage(img);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     });
+
+    init();
   </script>
 </body>
 </html>
