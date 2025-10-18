@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pallas Cat Identifier 🐾</title>
+
+  <!-- TensorFlow.js and Teachable Machine -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f4f4f4;
+      padding: 2rem;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    #preview img {
+      margin-top: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      max-width: 80%;
+      height: auto;
+    }
+    #results {
+      margin-top: 1.5rem;
+      font-size: 1.2em;
+    }
+    input[type=file] {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Pallas Cat Identifier 🐾</h1>
+  <p>Upload a photo of a Pallas cat to identify if it’s a Manul or not!</p>
+
+  <input type="file" id="imageUpload" accept="image/*" />
+  <div id="preview"></div>
+  <div id="results"></div>
+
+  <script>
+    const modelURL = "model/"; // Folder containing model.json, metadata.json, weights.bin
+    let model;
+
+    async function loadModel() {
+      const modelURLFull = modelURL + "model.json";
+      const metadataURL = modelURL + "metadata.json";
+      model = await tmImage.load(modelURLFull, metadataURL);
+      console.log("✅ Model loaded!");
+    }
+
+    loadModel();
+
+    // Label mapping: raw model labels → friendly display names
+    const labelMap = {
+      "manul": "Pallas Cat 🐾",
+      "not manul": "Not a Pallas Cat 🚫",
+      "unknown": "Unrecognized 😕"
+    };
+
+    document.getElementById("imageUpload").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      // Show preview image
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.onload = () => URL.revokeObjectURL(img.src);
+      document.getElementById("preview").innerHTML = "";
+      document.getElementById("preview").appendChild(img);
+
+      // Predict
+      if (!model) {
+        document.getElementById("results").innerText = "Loading model...";
+        await loadModel();
+      }
+
+      const prediction = await model.predict(img);
+      prediction.sort((a, b) => b.probability - a.probability);
+
+      const top = prediction[0];
+      const label = labelMap[top.className] || top.className;
+
+      document.getElementById("results").innerHTML = `
+        <h3>Prediction: ${label}</h3>
+        <p>Confidence: ${(top.probability * 100).toFixed(2)}%</p>
+      `;
+    });
+  </script>
+</body>
+</html>
