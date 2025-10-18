@@ -43,14 +43,14 @@
 
 <body>
   <h1>Pallas Cat Identifier 🐾</h1>
-  <p>Upload a photo of a Pallas cat to identify who it is!</p>
+  <p>Upload a photo of a Pallas cat to identify if it’s a Manul or not!</p>
 
   <input type="file" id="imageUpload" accept="image/*" />
   <div id="preview"></div>
   <div id="results"></div>
 
   <script>
-    const modelURL = "model/";
+    const modelURL = "model/"; // Folder containing model.json, metadata.json, weights.bin
     let model;
 
     async function loadModel() {
@@ -62,14 +62,21 @@
 
     loadModel();
 
+    // Label mapping: raw model labels → friendly display names
+    const labelMap = {
+      "manul": "Pallas Cat 🐾",
+      "not manul": "Not a Pallas Cat 🚫",
+      "unknown": "Unrecognized 😕"
+    };
+
     document.getElementById("imageUpload").addEventListener("change", async (event) => {
       const file = event.target.files[0];
       if (!file) return;
 
-      // Show preview
+      // Show preview image
       const img = document.createElement("img");
       img.src = URL.createObjectURL(file);
-      img.onload = () => URL.revokeObjectURL(img.src); // free memory
+      img.onload = () => URL.revokeObjectURL(img.src);
       document.getElementById("preview").innerHTML = "";
       document.getElementById("preview").appendChild(img);
 
@@ -83,8 +90,10 @@
       prediction.sort((a, b) => b.probability - a.probability);
 
       const top = prediction[0];
+      const label = labelMap[top.className] || top.className;
+
       document.getElementById("results").innerHTML = `
-        <h3>Prediction: ${top.className}</h3>
+        <h3>Prediction: ${label}</h3>
         <p>Confidence: ${(top.probability * 100).toFixed(2)}%</p>
       `;
     });
