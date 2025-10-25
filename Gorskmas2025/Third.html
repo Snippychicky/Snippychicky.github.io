@@ -37,23 +37,16 @@
 
 .hotspot {
   position: absolute;
-  cursor: pointer;
+ cursor: default;
   background: transparent;
   border: none;
- cursor: default;
 }
+ 
 
-
-  .hotspot:hover {
-    border-color: #0ff;
-    background: rgba(0,0,0,0);
+  .hidden {
+    border: none !important;
+    background: transparent !important;
   }
-
-.hidden {
-  border: none !important;
-  background: transparent !important;
-}
-
 
   .controls {
     margin-top: 20px;
@@ -66,44 +59,68 @@
     padding: 8px 16px;
     margin: 0 5px;
     border-radius: 6px;
-    cursor: pointer;
+     cursor: default;
   }
 
   button:hover {
-    background: #111;
+    background: #555;
   }
 </style>
+
 </head>
+
 <body>
+
 <h1>Manul Clickable Image Demo</h1>
+
 <div class="image-container" id="imageContainer">
+
   <img id="mainImage" src="3.png" alt="Manul" />
+
 </div>
+
+
 
 <div class="controls">
+
   <button id="prevBtn"></button>
+
   <button id="nextBtn"></button>
+
   <button id="toggleHotspots"></button>
+
 </div>
 
+
+
 <script>
+
   // === Configuration ===
+
   const images = [
+
     {
+
       src: "3.png",
+
       hotspots: [
-              { x: 26, y: 41, w: 4, h: 5, url: "https://snippychicky.github.io/Gorskmas2025/Fourth.html" },
+
+     { x: 26, y: 41, w: 4, h: 5, url: "https://snippychicky.github.io/Gorskmas2025/Fourth.html" },
         { x: 67, y: 79, w: 10, h: 12, url: "https://snippychicky.github.io/Gorskmas2025/GetHoneyed.html" }
-       
+
+
       ]
+
     }
+
   ];
+
 
   // === Script ===
   let currentIndex = 0;
-  const container = document.getElementById('');
-  const imageEl = document.getElementById('');
-  const toggleBtn = document.getElementById('');
+  const container = document.getElementById('imageContainer');
+  const imageEl = document.getElementById('mainImage');
+  const toggleBtn = document.getElementById('toggleHotspots');
 
   function loadImage(index) {
     container.querySelectorAll('.hotspot').forEach(el => el.remove());
@@ -117,7 +134,7 @@
         div.style.top = h.y + '%';
         div.style.width = h.w + '%';
         div.style.height = h.h + '%';
-div.addEventListener('click', () => window.open(h.url, '_self'));
+        div.addEventListener('click', () => window.open(h.url, '_self'));
         container.appendChild(div);
       });
     };
