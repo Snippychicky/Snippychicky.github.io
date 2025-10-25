@@ -3,41 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GORSKMAS 2025!!!</title>
+<title>Gorskmas</title>
 <style>
   body {
-    background: #111;
+    background: linear-gradient(#0a0a0a, #222);
     color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    overflow: hidden;
     height: 100vh;
     margin: 0;
     font-family: sans-serif;
   }
 
   h1 {
-    margin-bottom: 20px;
-    letter-spacing: 2px;
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 3px;
+    z-index: 10;
   }
 
   img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 400px;
     height: auto;
-    animation: flip 2s infinite linear;
-    transform-origin: center;
+    z-index: 2;
+    pointer-events: none;
   }
 
-  @keyframes flip {
-    0%   { transform: scaleX(1); }
-    50%  { transform: scaleX(-1); }
-    100% { transform: scaleX(1); }
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
   }
 </style>
 </head>
 <body>
-  <h1>Merry Gorskmas 2025!</h1>
-  <img src="https://raw.githubusercontent.com/Snippychicky/Snippychicky.github.io/refs/heads/main/Gorskmas2025/Gorsmas.png" >
+  <h1>TEST</h1>
+  <img src="https://raw.githubusercontent.com/Snippychicky/Snippychicky.github.io/refs/heads/main/Gorskmas2025/Gorsmas.png" alt="Gorskmas">
+  <canvas id="snowCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById('snowCanvas');
+const ctx = canvas.getContext('2d');
+
+let width = window.innerWidth;
+let height = window.innerHeight;
+canvas.width = width;
+canvas.height = height;
+
+let snowflakes = [];
+let snowDepth = new Array(Math.floor(width / 5)).fill(0); // snow buildup array
+
+class Snowflake {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * -height;
+    this.size = Math.random() * 3 + 1;
+    this.speed = Math.random() * 1 + 0.5;
+    this.wind = Math.random() * 0.5 - 0.25;
+  }
+  update() {
+    this.y += this.speed;
+    this.x += this.wind;
+
+    // Snowflake lands on top of the pile
+    if (this.y > height - getSnowHeightAtX(this.x) - this.size) {
+      addSnowAtX(this.x, this.size);
+      this.reset();
+    }
+
+    if (this.x > width || this.x < 0) {
+      this.reset();
+    }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+  }
+}
+
+function createSnowflakes(count = 200) {
+  for (let i = 0; i < count; i++) {
+    snowflakes.push(new Snowflake());
+  }
+}
+
+function getSnowHeightAtX(x) {
+  const i = Math.floor((x / width) * snowDepth.length);
+  return snowDepth[i];
+}
+
+function addSnowAtX(x, amount) {
+  const i = Math.floor((x / width) * snowDepth.length);
+  const spread = 2; // how wide snow spreads when it lands
+  for (let j = -spread; j <= spread; j++) {
+    if (snowDepth[i + j] !== undefined) {
+      snowDepth[i + j] += amount * (1 - Math.abs(j) / (spread + 1));
+      if (snowDepth[i + j] > height * 0.3) {
+        snowDepth[i + j] = height * 0.3; // limit pile height
+      }
+    }
+  }
+}
+
+// Smooths rough edges but doesn’t remove snow
+function smoothSnow() {
+  const newDepth = [...snowDepth];
+  for (let i = 0; i < snowDepth.length; i++) {
+    const left = snowDepth[i - 1] || snowDepth[i];
+    const right = snowDepth[i + 1] || snowDepth[i];
+    const avg = (left + snowDepth[i] + right) / 3;
+    newDepth[i] = snowDepth[i] * 0.97 + avg * 0.03;
+  }
+  snowDepth = newDepth;
+}
+
+function drawSnowPile() {
+  ctx.beginPath();
+  ctx.moveTo(0, height);
+  for (let i = 0; i < snowDepth.length; i++) {
+    const x = (i / snowDepth.length) * width;
+    const y = height - snowDepth[i];
+    ctx.lineTo(x, y);
+  }
+  ctx.lineTo(width, height);
+  ctx.closePath();
+  ctx.fillStyle = 'white';
+  ctx.fill();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+  smoothSnow();
+
+  // Draw falling flakes
+  snowflakes.forEach(flake => {
+    flake.update();
+    flake.draw();
+  });
+
+  // Draw the accumulated snow pile
+  drawSnowPile();
+
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', () => {
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+  snowDepth = new Array(Math.floor(width / 5)).fill(0);
+});
+
+createSnowflakes();
+animate();
+</script>
 </body>
 </html>
