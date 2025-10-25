@@ -82,7 +82,7 @@
 <div class="controls">
   <button id="prevBtn">Previous</button>
   <button id="nextBtn">Next</button>
-  <button id="toggleHotspots">Toggle Hotspot Borders</button>
+
 </div>
 
 <script>
@@ -101,7 +101,7 @@
   let currentIndex = 0;
   const container = document.getElementById('imageContainer');
   const imageEl = document.getElementById('mainImage');
-  const toggleBtn = document.getElementById('toggleHotspots');
+
 
   function loadImage(index) {
     container.querySelectorAll('.hotspot').forEach(el => el.remove());
