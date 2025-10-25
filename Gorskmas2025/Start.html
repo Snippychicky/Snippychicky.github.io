@@ -35,22 +35,24 @@
     box-shadow: 0 0 10px rgba(255,255,255,0.2);
   }
 
-  .hotspot {
-    position: absolute;
-    cursor: pointer;
-    border: 2px dashed rgba(255,255,255,0.3);
-    transition: border-color 0.2s, background 0.2s;
-  }
+ .hotspot {
+  position: absolute;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+ cursor: default;
+}
+
 
   .hotspot:hover {
     border-color: #0ff;
-    background: rgba(0,255,255,0.1);
+    background: rgba(0,0,0,0);
   }
 
-  .hidden {
-    border: none !important;
-    background: transparent !important;
-  }
+.hidden {
+  border: none !important;
+  background: transparent !important;
+}
 
   .controls {
     margin-top: 20px;
