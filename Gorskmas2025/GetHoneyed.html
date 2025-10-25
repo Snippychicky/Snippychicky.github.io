@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>1/3</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    /* remove default spacing so tiles reach edges */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    /* body uses honey.png as a repeating tile */
+    body {
+      background-image: url('honey.png');
+      background-repeat: repeat;        /* tile horizontally and vertically */
+      background-position: 0 0;        /* start at top-left */
+      background-attachment: fixed;    /* optional: tiles stay fixed on scroll */
+      /* if you want the tile to scale you can use background-size,
+         but pure tiling uses repeat without scaling */
+    }
+
+    /* keep content centered for demo (optional) */
+    .center {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0,0,0,0.75);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      text-shadow: 0 1px 0 #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+  
+  </div>
+</body>
+</html>
