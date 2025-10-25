@@ -38,13 +38,13 @@
   .hotspot {
     position: absolute;
     cursor: pointer;
-    border: 2px dashed rgba(255,255,255,0.3);
+    border: 2px dashed rgba(0,0,0,0);
     transition: border-color 0.2s, background 0.2s;
   }
 
   .hotspot:hover {
     border-color: #0ff;
-    background: rgba(0,255,255,0.1);
+    background: rgba(0,0,0,0);
   }
 
   .hidden {
@@ -138,7 +138,7 @@
         div.style.top = h.y + '%';
         div.style.width = h.w + '%';
         div.style.height = h.h + '%';
-        div.addEventListener('click', () => window.open(h.url, '_blank'));
+        div.addEventListener('click', () => window.open(h.url, '_self'));
         container.appendChild(div);
       });
     };
