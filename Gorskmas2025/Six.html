@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manul Image Hotspot Viewer</title>
+<style>
+  body {
+    background: #111;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  .image-container {
+    position: relative;
+    display: inline-block;
+    max-width: 90vw;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  }
+
+  .hotspot {
+    position: absolute;
+    cursor: pointer;
+    border: 2px dashed rgba(255,255,255,0.3);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .hotspot:hover {
+    border-color: #0ff;
+    background: rgba(0,255,255,0.1);
+  }
+
+  .hidden {
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .controls {
+    margin-top: 20px;
+  }
+
+  button {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #555;
+  }
+</style>
+</head>
+<body>
+<h1>Manul Clickable Image Demo</h1>
+<div class="image-container" id="imageContainer">
+  <img id="mainImage" src="6.png" alt="Manul" />
+</div>
+
+<div class="controls">
+  <button id="prevBtn">Previous</button>
+  <button id="nextBtn">Next</button>
+  <button id="toggleHotspots">Toggle Hotspot Borders</button>
+</div>
+
+<script>
+  // === Configuration ===
+  const images = [
+    {
+      src: "6.png",
+      hotspots: [
+        { x: 51, y: 50, w: 2, h: 3, url: "https://snippychicky.github.io/Gorskmas2025/Seven.html" },
+   
+      ]
+    }
+  ];
+
+  // === Script ===
+  let currentIndex = 0;
+  const container = document.getElementById('imageContainer');
+  const imageEl = document.getElementById('mainImage');
+  const toggleBtn = document.getElementById('toggleHotspots');
+
+  function loadImage(index) {
+    container.querySelectorAll('.hotspot').forEach(el => el.remove());
+    const { src, hotspots } = images[index];
+    imageEl.src = src;
+    imageEl.onload = () => {
+      hotspots.forEach(h => {
+        const div = document.createElement('div');
+        div.classList.add('hotspot');
+        div.style.left = h.x + '%';
+        div.style.top = h.y + '%';
+        div.style.width = h.w + '%';
+        div.style.height = h.h + '%';
+        div.addEventListener('click', () => window.open(h.url, '_blank'));
+        container.appendChild(div);
+      });
+    };
+  }
+
+  document.getElementById('prevBtn').onclick = () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    loadImage(currentIndex);
+  };
+
+  document.getElementById('nextBtn').onclick = () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    loadImage(currentIndex);
+  };
+
+  toggleBtn.onclick = () => {
+    document.querySelectorAll('.hotspot').forEach(el => el.classList.toggle('hidden'));
+  };
+
+  // initialize
+  loadImage(currentIndex);
+</script>
+</body>
+</html>
